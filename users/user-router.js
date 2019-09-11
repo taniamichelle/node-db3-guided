@@ -81,8 +81,9 @@ router.delete('/:id', (req, res) => {
 router.get('/:id/posts', (req, res) => {
   const { id } = req.params;
   db('posts as p')
-    .join('users as u', 'u.id', '=', 'p.user_id') // = is optional
+    .join('users as u', 'u.id', '=', 'p.user_id') // = is optional; could put in diff operators such as >
     .where('u.id', id) // alternative: .where({user_id: id})
+    .select('p.id', 'p.contents', 'u.username')
     .then(posts => {
       res.status(200).json(posts);
     })
